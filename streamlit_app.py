@@ -44,7 +44,7 @@ import streamlit as st
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-import numpy as
+import numpy as np
 import joblib
 import string, re
 from nltk.corpus import stopwords
