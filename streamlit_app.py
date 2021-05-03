@@ -1,47 +1,55 @@
-#Testing, implement into github
-<<<<<<< HEAD
-#test ver 2 
-#Now we have a conflict, let's fix it
+# #Testing, implement into github
+# <<<<<<< HEAD
+# #test ver 2 
+# #Now we have a conflict, let's fix it
 
-#test and learn how to fix git conflict
->>>>>>> branch_2
-#import streamlit
-import streamlit as st
+# #test and learn how to fix git conflict
+# >>>>>>> branch_2
+# #import streamlit
+# import streamlit as st
 
-# Import Selenium and its sub libraries
-import selenium 
-from selenium import webdriver
-# Import BS4
-import requests #needed to load the page for BS4
-from bs4 import BeautifulSoup
-import pandas as pd #Using panda to create our dataframe
-import numpy as np
-#Import necessary libraries for modeling
-import joblib
-pd.set_option('display.max_colwidth', None)
-import re
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
+# # Import Selenium and its sub libraries
+# import selenium 
+# from selenium import webdriver
+# # Import BS4
+# import requests #needed to load the page for BS4
+# from bs4 import BeautifulSoup
+# import pandas as pd #Using panda to create our dataframe
+# import numpy as np
+# #Import necessary libraries for modeling
+# import joblib
+# pd.set_option('display.max_colwidth', None)
+# import re
+# from sklearn.preprocessing import OneHotEncoder
+# from sklearn.model_selection import train_test_split
+# from sklearn.feature_extraction.text import CountVectorizer
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# from sklearn.base import BaseEstimator, TransformerMixin
+# from nltk.stem import PorterStemmer
+# import nltk
+# nltk.download('stopwords')
+# import string
+# from nltk.corpus import stopwords
+# from sklearn.compose import ColumnTransformer
+# from sklearn.decomposition import PCA
+# #Import tensorflow to load model
+# import tensorflow as tf
+# from tensorflow import keras
+
+
+
+
 from sklearn.base import BaseEstimator, TransformerMixin
-from nltk.stem import PorterStemmer
-import nltk
-nltk.download('stopwords')
-import string
-from nltk.corpus import stopwords
-from sklearn.compose import ColumnTransformer
-from sklearn.decomposition import PCA
-#Import tensorflow to load model
-import tensorflow as tf
-from tensorflow import keras
-
-
-
-
-
 import streamlit as st
 from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+import numpy as np
+import joblib
+import string, re
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
 st.image('IMDB.png', width=200)
 st.write('''
 # Simple IMDB Reviews Scraping 
@@ -56,7 +64,7 @@ url1 = st.text_input('Please paste your movie\'s link')
 if url1 == '': #only run the rest after user pasted a link to input box and hit enter
     pass
 else:
-    #Using the same script to grab review, the only difference is we only scrap the review from 1st page, so dont need Selenium to hit expand.
+    #setup user agent for BS4, except some rare case, it would be the same for most browser     
     user_agent = {'User-agent': 'Mozilla/5.0'}
     response1 = requests.get(url1, headers = user_agent)
     soup1 = BeautifulSoup(response1.text, 'html.parser')
@@ -64,15 +72,10 @@ else:
     review_link = 'https://www.imdb.com'+soup1.find('a', text = 'USER REVIEWS').get('href')
 
     url = review_link
-
-
-    #setup user agent for BS4, except some rare case, it would be the same for most browser 
-    user_agent = {'User-agent': 'Mozilla/5.0'}
     #Use request.get to load the whole page
     response = requests.get(url, headers = user_agent)
     #Parse the request object to BS4 to transform it into html structure
     soup = BeautifulSoup(response.text, 'html.parser')
-
     block = soup.find_all('div', class_ = 'review-container')
     movie_name = soup.find('div', class_ = 'parent').text.strip()
     review_title = []
@@ -109,7 +112,6 @@ else:
     review[['Review Rating','temp']] = review['Review Rating'].str.split(pat = '/', expand = True)
     review.drop('temp', axis=1, inplace=True)
     review['Review Rating'] = review['Review Rating'].astype(int)
-
     st.write(review) #print out the review dataframe after created it
 
 
@@ -169,9 +171,9 @@ Using the same data that we scraped above
     if result: #Process if user click on 'Let's go' button
         #Loading model to predict score
         #Please note that I used the file path as is in my laptop, please change it accordingly to where you put my file. In the submission, I included it in Data folder
-        clean_text_model = joblib.load(r'C:\Users\ngoch\Dropbox\Data science\Brainstation\Capstone project\Final\clean_text.joblib')
-        countvec_model = joblib.load(r'C:\Users\ngoch\Dropbox\Data science\Brainstation\Capstone project\Final\col_tran.joblib')
-        LogAT = joblib.load(r'C:\Users\ngoch\Dropbox\Data science\Brainstation\Capstone project\Final\logAT.joblib')
+        clean_text_model = joblib.load('Joblib_files/clean_text.joblib')
+        countvec_model = joblib.load('Joblib_files/col_tran.joblib')
+        LogAT = joblib.load('Joblib_files/logAT.joblib')
 
         #Clean the text
         cleaned_text = clean_text_model.transform(review['Review_body']) #transfrom text using CleanText class defined above

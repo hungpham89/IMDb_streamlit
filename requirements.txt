@@ -1,5 +1,11 @@
-streamlit==0.79.0
+streamlit
 pandas
 bs4
 joblib
 requests
+sklearn
+string
+re
+numpy
+nltk
+
