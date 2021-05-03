@@ -1,0 +1,5 @@
+streamlit==0.79.0
+pandas
+bs4
+joblib
+requests
