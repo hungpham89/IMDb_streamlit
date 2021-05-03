@@ -6,5 +6,6 @@ requests
 sklearn
 numpy
 nltk
+mord
 
 
