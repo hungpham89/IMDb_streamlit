@@ -44,11 +44,13 @@ import streamlit as st
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-import numpy as np
+import numpy as
 import joblib
 import string, re
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+import nltk
+nltk.download('stopwords')
 
 st.image('IMDB.png', width=200)
 st.write('''
