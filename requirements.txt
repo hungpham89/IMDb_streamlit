@@ -4,8 +4,8 @@ bs4
 joblib
 requests
 sklearn
-string
-re
 numpy
 nltk
+string
+re
 
