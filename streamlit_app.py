@@ -1,46 +1,6 @@
-# #Testing, implement into github
-# <<<<<<< HEAD
-# #test ver 2 
-# #Now we have a conflict, let's fix it
-
-# #test and learn how to fix git conflict
-# >>>>>>> branch_2
-# #import streamlit
-# import streamlit as st
-
-# # Import Selenium and its sub libraries
-# import selenium 
-# from selenium import webdriver
-# # Import BS4
-# import requests #needed to load the page for BS4
-# from bs4 import BeautifulSoup
-# import pandas as pd #Using panda to create our dataframe
-# import numpy as np
-# #Import necessary libraries for modeling
-# import joblib
-# pd.set_option('display.max_colwidth', None)
-# import re
-# from sklearn.preprocessing import OneHotEncoder
-# from sklearn.model_selection import train_test_split
-# from sklearn.feature_extraction.text import CountVectorizer
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# from sklearn.base import BaseEstimator, TransformerMixin
-# from nltk.stem import PorterStemmer
-# import nltk
-# nltk.download('stopwords')
-# import string
-# from nltk.corpus import stopwords
-# from sklearn.compose import ColumnTransformer
-# from sklearn.decomposition import PCA
-# #Import tensorflow to load model
-# import tensorflow as tf
-# from tensorflow import keras
-
-
-
-
 from sklearn.base import BaseEstimator, TransformerMixin
 import streamlit as st
+st.set_page_config(layout="wide")
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
@@ -54,67 +14,76 @@ nltk.download('stopwords')
 
 st.image('IMDB.png', width=200)
 st.write('''
-# Simple IMDB Reviews Scraping 
+# IMDb Preview Predictor 
+Developed by [Hung Pham](https://www.linkedin.com/in/hungpham89/)
 
-Quick and easy way to get your text data for NLP
+This is a small, fun project to demonstrate how to use Machine Learning, specifically Natural Language Processing (NLP) to deal with text data and predict the sentiment within them.  
+
+The model was trained from 50k reviews from 150 movies.
+
+Go to IMDb and grab the link (on the address bar) of the movie of your choice and paste it to the box below.  
+
+The app will grab the first 25 reviews from the user's review page, along with their scores.
 
 ''')
-
-
-
+cont = False
 url1 = st.text_input('Please paste your movie\'s link')
 if url1 == '': #only run the rest after user pasted a link to input box and hit enter
     pass
 else:
-    #setup user agent for BS4, except some rare case, it would be the same for most browser     
-    user_agent = {'User-agent': 'Mozilla/5.0'}
-    response1 = requests.get(url1, headers = user_agent)
-    soup1 = BeautifulSoup(response1.text, 'html.parser')
+    try:
+        #setup user agent for BS4, except some rare case, it would be the same for most browser     
+        user_agent = {'User-agent': 'Mozilla/5.0'}
+        response1 = requests.get(url1, headers = user_agent)
+        soup1 = BeautifulSoup(response1.text, 'html.parser')
 
-    review_link = 'https://www.imdb.com'+soup1.find('a', text = 'USER REVIEWS').get('href')
+        review_link = 'https://www.imdb.com'+soup1.find('a', text = 'USER REVIEWS').get('href')
 
-    url = review_link
-    #Use request.get to load the whole page
-    response = requests.get(url, headers = user_agent)
-    #Parse the request object to BS4 to transform it into html structure
-    soup = BeautifulSoup(response.text, 'html.parser')
-    block = soup.find_all('div', class_ = 'review-container')
-    movie_name = soup.find('div', class_ = 'parent').text.strip()
-    review_title = []
-    content = []
-    rating = []
-    date = []
-    user_name = []
-    for i in range(len(block)):
-        try:
-            ftitle = block[i].find('a', class_ = 'title').text.strip()
-            fuser = block[i].find('span', class_ = 'display-name-link').text.strip()
-            fcontent = block[i].find('div', class_ = 'text show-more__control').text.strip()
-            frating = block[i].find('span', class_ = 'rating-other-user-rating').text.strip()
-            fdate = block[i].find('span', class_ = 'review-date').text.strip()
-        except:
-            continue
-    
-        review_title.append(ftitle)
-        user_name.append(fuser)
-        content.append(fcontent)
-        rating.append(frating)
-        date.append(fdate)
+        url = review_link
+        #Use request.get to load the whole page
+        response = requests.get(url, headers = user_agent)
+        #Parse the request object to BS4 to transform it into html structure
+        soup = BeautifulSoup(response.text, 'html.parser')
+        block = soup.find_all('div', class_ = 'review-container')
+        movie_name = soup.find('div', class_ = 'parent').text.strip()
+        review_title = []
+        content = []
+        rating = []
+        date = []
+        user_name = []
+        for i in range(len(block)):
+            try:
+                ftitle = block[i].find('a', class_ = 'title').text.strip()
+                fuser = block[i].find('span', class_ = 'display-name-link').text.strip()
+                fcontent = block[i].find('div', class_ = 'text show-more__control').text.strip()
+                frating = block[i].find('span', class_ = 'rating-other-user-rating').text.strip()
+                fdate = block[i].find('span', class_ = 'review-date').text.strip()
+            except:
+                continue
+        
+            review_title.append(ftitle)
+            user_name.append(fuser)
+            content.append(fcontent)
+            rating.append(frating)
+            date.append(fdate)
 
-    #Build data dictionary for dataframe
-    data = {'User_name': user_name,
-        'Review date' : date, 
-        'Review title': review_title,
-        'Review_body' : content, 
-        'Review Rating': rating,
-        }
-    #Build dataframe to export
-    review = pd.DataFrame(data = data)
-    st.write(movie_name)
-    review[['Review Rating','temp']] = review['Review Rating'].str.split(pat = '/', expand = True)
-    review.drop('temp', axis=1, inplace=True)
-    review['Review Rating'] = review['Review Rating'].astype(int)
-    st.write(review) #print out the review dataframe after created it
+        #Build data dictionary for dataframe
+        data = {'User_name': user_name,
+            'Review date' : date, 
+            'Review title': review_title,
+            'Review_body' : content, 
+            'Review Rating': rating,
+            }
+        #Build dataframe to export
+        review = pd.DataFrame(data = data)
+        st.write(movie_name)
+        review[['Review Rating','temp']] = review['Review Rating'].str.split(pat = '/', expand = True)
+        review.drop('temp', axis=1, inplace=True)
+        review['Review Rating'] = review['Review Rating'].astype(int)
+        st.dataframe(review) #print out the review dataframe after created it
+        cont = True
+    except:
+        st.write('That isn\'t look like an IMDb\'s link, please try again!')
 
 
 
@@ -160,15 +129,24 @@ class CleanText(BaseEstimator, TransformerMixin):
         return clean_X
 
 
+def hit_or_miss(s):
+    is_max = s == 'Hit'
+    return ['background-color: mediumseagreen' if v else '' for v in is_max]
+
+
 
 #Set up buttone to click to start prediction part
-if url1 == '': #Check if url is empty, if yes, do nothing
+if cont != True: #Check if url is empty, if yes, do nothing
     pass
 else: #only show this part if url has been filled
+
     st.write('''
-## Okay, now let's make some prediction
-Using the same data that we scraped above
-''')
+    ## Okay, now we can make some predictions.
+
+    The model will read the review's body text and guess the score of this review based on the content.
+
+    If the prediction fall within 1-2 score from the true values, it will be counted as a `Hit`, any further and it will be counted as a `Miss` 
+    ''')
     result = st.button("Let's go")
     if result: #Process if user click on 'Let's go' button
         #Loading model to predict score
@@ -195,6 +173,7 @@ Using the same data that we scraped above
         review['Predicted'] = y_hat
         #Create new column to check hit or miss base on 2steps adjacent accuracy
         review['Hit or Miss'] = np.where(abs(review['Predicted']-review['Review Rating'])<=2, 'Hit', 'Miss')
-        review
+        st.dataframe(review.style.apply(hit_or_miss, subset = ['Hit or Miss']))
+        
     else:
         pass
