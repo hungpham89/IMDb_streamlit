@@ -145,7 +145,7 @@ else: #only show this part if url has been filled
 
     The model will read the review's body text and guess the score of this review based on the content.
 
-    If the prediction fall within 1-2 score from the true values, it will be counted as a `Hit`, any further and it will be counted as a `Miss` 
+    If the prediction fall within 1-2 score from the true value, it will be counted as a `Hit`, any further and it will be counted as a `Miss` 
     ''')
     result = st.button("Let's go")
     if result: #Process if user click on 'Let's go' button
