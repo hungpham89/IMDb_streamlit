@@ -24,7 +24,7 @@ This is a small, fun project to demonstrate how to use Machine Learning, specifi
 
 The [model](https://github.com/hungpham89/IMDB_review_predictor) was trained from 50k reviews from 150 movies.
 
-Go to IMDb and grab the link (on the address bar) of the movie of your choice and paste it to the box below.  
+Search for your movie below and select the one that you're looking for. 
 
 The app will grab the first 25 reviews from the user's review page, along with their scores and make some predictions based on the review content.
 
