@@ -13,7 +13,7 @@ import nltk
 from imdb import IMDb
 nltk.download('stopwords')
 
-st.image('IMDB.png', width=200)
+st.image('IMDb_Header_Page.jpg', use_column_width = 'auto')
 st.write('''
 # IMDb Review Predictor 
 Developed by [Hung Pham](https://www.linkedin.com/in/hungpham89/)  
@@ -26,7 +26,9 @@ The [model](https://github.com/hungpham89/IMDB_review_predictor) was trained fro
 
 Search for your movie below and select the one that you're looking for. 
 
-The app will grab the first 25 reviews from the user's review page, along with their scores and make some predictions based on the review content.
+The app will grab the first 25 reviews from the user's review page, along with their scores and make the predictions based on the review content.
+
+You can hover over the reviews to see the full text.
 
 ''')
 #Instantiate imdb instance
