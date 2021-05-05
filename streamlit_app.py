@@ -35,11 +35,10 @@ if user_input == '':
     pass
 else:
     movies = ia.search_movie(user_input)[0:10]
-    st.write('checked')
     results = [i['long imdb title'] for i in movies]
     choice = st.radio(label = 'Search results:', options = results)
     url1 = ia.get_imdbURL(ia.search_movie(choice)[0])
-    st.write('IMDb link to your movie:')
+    st.write('IMDb link to this movie:')
     st.write(url1)
 
 
@@ -164,33 +163,27 @@ else:
 
         If the prediction fall within 1-2 score from the true value, it will be counted as a `Hit`, any further and it will be counted as a `Miss` 
         ''')
-        result = st.button("Let's go")
-        if result: #Process if user click on 'Let's go' button
-            #Loading model to predict score
-            #Please note that I used the file path as is in my laptop, please change it accordingly to where you put my file. In the submission, I included it in Data folder
-            clean_text_model = joblib.load('Joblib_files/clean_text.joblib')
-            countvec_model = joblib.load('Joblib_files/col_tran.joblib')
-            LogAT = joblib.load('Joblib_files/logAT.joblib')
+        clean_text_model = joblib.load('Joblib_files/clean_text.joblib')
+        countvec_model = joblib.load('Joblib_files/col_tran.joblib')
+        LogAT = joblib.load('Joblib_files/logAT.joblib')
 
-            #Clean the text
-            cleaned_text = clean_text_model.transform(review['Review_body']) #transfrom text using CleanText class defined above
-            cleaned_text = pd.DataFrame(data = cleaned_text)
-            #Transform with countvec (actually using Tfidf in my final model)
-            counted = countvec_model.transform(cleaned_text)
+        #Clean the text
+        cleaned_text = clean_text_model.transform(review['Review_body']) #transfrom text using CleanText class defined above
+        cleaned_text = pd.DataFrame(data = cleaned_text)
+        #Transform with countvec (actually using Tfidf in my final model)
+        counted = countvec_model.transform(cleaned_text)
 
-            #Predict the score
-            y_hat = LogAT.predict(counted)
-            y_hat = y_hat.round().squeeze()
-            # Convert extreme value into their respective min,max
-            y_hat = np.where(y_hat >10,10,y_hat)
-            y_hat = np.where(y_hat <1,1,y_hat)
-            y_hat.astype(int)
+        #Predict the score
+        y_hat = LogAT.predict(counted)
+        y_hat = y_hat.round().squeeze()
+        # Convert extreme value into their respective min,max
+        y_hat = np.where(y_hat >10,10,y_hat)
+        y_hat = np.where(y_hat <1,1,y_hat)
+        y_hat.astype(int)
 
-            #Add the newly predicted values to review dataframe
-            review['Predicted'] = y_hat
-            #Create new column to check hit or miss base on 2steps adjacent accuracy
-            review['Hit or Miss'] = np.where(abs(review['Predicted']-review['Review Rating'])<=2, 'Hit', 'Miss')
-            st.dataframe(review.style.apply(hit_or_miss, subset = ['Hit or Miss']))
-            
-        else:
-            pass
+        #Add the newly predicted values to review dataframe
+        review['Predicted'] = y_hat
+        #Create new column to check hit or miss base on 2steps adjacent accuracy
+        review['Hit or Miss'] = np.where(abs(review['Predicted']-review['Review Rating'])<=2, 'Hit', 'Miss')
+        st.dataframe(review.style.apply(hit_or_miss, subset = ['Hit or Miss']))
+
