@@ -7,5 +7,6 @@ sklearn
 numpy
 nltk
 mord
+imdbpy
 
 
