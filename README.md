@@ -8,7 +8,7 @@ Detail work can be found [here](https://github.com/hungpham89/IMDB_review_predic
 
 ## Usage
 
-Simply copy and paste the link of the movie of your choice
+Use the search box to find your movie and choose from the search results
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
