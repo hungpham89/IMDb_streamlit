@@ -20,7 +20,7 @@ Developed by [Hung Pham](https://www.linkedin.com/in/hungpham89/)
 
 Source code can be found [here](https://github.com/hungpham89/IMDb_streamlit)
 
-This is the demo app for my Capstone project at Brainstation, Data Science Bootcamp.
+This is the demo app for my Capstone project at [Brainstation](https://brainstation.io/), Data Science Bootcamp.
 
 The project is to demonstrate how to use Machine Learning, specifically Natural Language Processing (NLP) to deal with text data and predict the sentiment within them. 
 
