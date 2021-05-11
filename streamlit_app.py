@@ -20,13 +20,15 @@ Developed by [Hung Pham](https://www.linkedin.com/in/hungpham89/)
 
 Source code can be found [here](https://github.com/hungpham89/IMDb_streamlit)
 
-This is a small, fun project to demonstrate how to use Machine Learning, specifically Natural Language Processing (NLP) to deal with text data and predict the sentiment within them.  
+This is the demo app for my Capstone project at Brainstation, Data Science Bootcamp.
+
+The project is to demonstrate how to use Machine Learning, specifically Natural Language Processing (NLP) to deal with text data and predict the sentiment within them. 
+
+The app will grab the first 25 reviews from the user's review page, along with their scores and make the predictions based on the review content.
 
 The [model](https://github.com/hungpham89/IMDB_review_predictor) was trained from 50k reviews from 150 movies.
 
 Search for your movie below and select the one that you're looking for. 
-
-The app will grab the first 25 reviews from the user's review page, along with their scores and make the predictions based on the review content.
 
 You can hover over the reviews to see the full text.
 
@@ -159,7 +161,7 @@ else:
         else:
             try:
                 st.write('''
-                ## Okay, let's make some predictions.
+                ## After getting the reviews, we can make some predictions.
 
                 The model will read the review's body text and guess the score of this review based on the content.
 
