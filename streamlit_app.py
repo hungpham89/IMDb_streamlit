@@ -57,7 +57,8 @@ else:
         response1 = requests.get(url1, headers = user_agent)
         soup1 = BeautifulSoup(response1.text, 'html.parser')
 
-        review_link = url1[:-15]+'reviews/?ref_=tt_ql_urv'
+        review_link = url1+'reviews/?ref_=tt_ql_urv'
+
 
         url = review_link
         #Use request.get to load the whole page
@@ -167,9 +168,21 @@ else:
 
                 If the prediction fall within 1-2 score from the true value, it will be counted as a `Hit`, any further and it will be counted as a `Miss` 
                 ''')
+
+                #test for error
+                st.write("starting loading lib")
+
                 clean_text_model = joblib.load('Joblib_files/clean_text.joblib')
+                st.write("2nd step")
+
                 countvec_model = joblib.load('Joblib_files/col_tran.joblib')
+                st.write("3nd step")
+
                 LogAT = joblib.load('Joblib_files/logAT.joblib')
+                st.write("4nd step")
+
+                #test for error
+                st.write("successfull load library")
 
                 #Clean the text
                 cleaned_text = clean_text_model.transform(review['Review_body']) #transfrom text using CleanText class defined above
