@@ -57,7 +57,7 @@ else:
         response1 = requests.get(url1, headers = user_agent)
         soup1 = BeautifulSoup(response1.text, 'html.parser')
 
-        review_link = 'https://www.imdb.com'+soup1.find('a', text = 'USER REVIEWS').get('href')
+        review_link = url1[:-15]+'reviews/?ref_=tt_ql_urv'
 
         url = review_link
         #Use request.get to load the whole page
